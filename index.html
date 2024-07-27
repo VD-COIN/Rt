@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YEHA Webpage</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            background: #e0f7fa; /* Light blue background */
+        }
+
+        .container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            height: 10%;
+            background: linear-gradient(135deg, #2196f3, #00bcd4); /* Blue gradient */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .part1 {
+            height: 75%;
+            position: relative;
+            background: linear-gradient(135deg, #00bcd4, #8bc34a); /* Blue to green gradient */
+            overflow: hidden;
+            touch-action: pan-y;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+
+        .slide {
+            min-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            color: white;
+            text-align: center;
+        }
+
+        .slide:nth-child(1) {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .slide:nth-child(2) {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .slide:nth-child(3) {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .part2 {
+            height: 15%;
+            background: #00796b; /* Dark teal */
+            color: white;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .dot {
+            height: 15px;
+            width: 15px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        .dot.active {
+            background-color: #ffeb3b; /* Yellow */
+        }
+
+        .button-container {
+            margin-top: 10px;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            background-color: #2196f3; /* Blue */
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background-color: #8bc34a; /* Green */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            EYUDAGI ONLINE LEARNING 
+        </div>
+        <div class="part1">
+            <div class="slides">
+                <div class="slide">WELCOME TO EYUDAGI!!!</div>
+                <div class="slide">እንኳን ወደ ኢዩዳጊ መተግበሪያ በደህና መጡ!!!!!</div>
+                <div class="slide">Baga Nagayaan gara applicationi EYUDAAGII  dhuftan!!!!</div>
+            </div>
+        </div>
+        <div class="part2">
+            <div class="dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+            <div class="button-container">
+                <button onclick="location.href='language.html'">GET STARTED</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let slideIndex = 0;
+        const slides = document.querySelector('.slides');
+        const dots = document.querySelectorAll('.dot');
+
+        function updateDots() {
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index === slideIndex) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+
+        function showSlide(index) {
+            slides.style.transform = `translateX(-${index * 100}%)`;
+            slideIndex = index;
+            updateDots();
+        }
+
+        document.querySelector('.part1').addEventListener('touchstart', handleTouchStart, false);
+        document.querySelector('.part1').addEventListener('touchmove', handleTouchMove, false);
+
+        let xDown = null;
+
+        function handleTouchStart(evt) {
+            const firstTouch = evt.touches[0];
+            xDown = firstTouch.clientX;
+        }
+
+        function handleTouchMove(evt) {
+            if (!xDown) {
+                return;
+            }
+
+            let xUp = evt.touches[0].clientX;
+            let xDiff = xDown - xUp;
+
+            if (xDiff > 0) {
+                slideIndex = (slideIndex + 1) % dots.length;
+            } else {
+                slideIndex = (slideIndex - 1 + dots.length) % dots.length;
+            }
+
+            showSlide(slideIndex);
+            xDown = null;
+        }
+
+        showSlide(slideIndex);
+    </script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Selection</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Arial', sans-serif;
+            background: #e0f7fa; /* Light blue background */
+        }
+
+        .container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header {
+            width: 100%;
+            height: 10%;
+            background: linear-gradient(135deg, #2196f3, #00bcd4); /* Blue gradient */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff; /* White background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .content h1 {
+            color: #00796b; /* Dark teal */
+            text-align: center;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+
+        .options label {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        .options input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.5);
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            background-color: #2196f3; /* Blue */
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background-color: #8bc34a; /* Green */
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4); 
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 300px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .modal-content p {
+            font-size: 1.2em;
+        }
+
+        .modal-content button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            background-color: #2196f3; /* Blue */
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-content button:hover {
+            background-color: #8bc34a; /* Green */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            EYUDAGI ONLINE LEARNING 
+        </div>
+        <div class="content">
+            <h1>SELECT YOUR LANGUAGE......?</h1>
+            <div class="options">
+                <label><input type="checkbox" id="english" name="language" onclick="checkOnlyOne(this)"> ENGLISH</label>
+                <label><input type="checkbox" id="amharic" name="language" onclick="checkOnlyOne(this)"> አማርኛ (AMHARIC)</label>
+            </div>
+            <div class="button-container">
+                <button onclick="saveLanguage()">CONTINUE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="languageModal" class="modal">
+        <div class="modal-content">
+            <p id="modalMessage"></p>
+            <button onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        function checkOnlyOne(checkbox) {
+            const checkboxes = document.getElementsByName('language');
+            checkboxes.forEach((item) => {
+                if (item !== checkbox) item.checked = false;
+            });
+        }
+
+        function saveLanguage() {
+            const englishCheckbox = document.getElementById('english');
+            const amharicCheckbox = document.getElementById('amharic');
+            let selectedLanguage = '';
+
+            if (englishCheckbox.checked) {
+                selectedLanguage = 'English';
+            } else if (amharicCheckbox.checked) {
+                selectedLanguage = 'Amharic';
+            } else {
+                showModal('Please select a language.');
+                return;
+            }
+
+            localStorage.setItem('selectedLanguage', selectedLanguage);
+            showModal('Language saved successfully!', true, selectedLanguage);
+        }
+
+        function showModal(message, success = false, language = '') {
+            const modal = document.getElementById('languageModal');
+            const modalMessage = document.getElementById('modalMessage');
+            modalMessage.textContent = message;
+            modal.style.display = 'block';
+            if (success) {
+                document.querySelector('.modal-content button').onclick = () => {
+                    closeModal();
+                    if (language === 'English') {
+                        window.location.href = 'signenglish.html';
+                    } else if (language === 'Amharic') {
+                        window.location.href = 'signamahric.html';
+                    }
+                };
+            } else {
+                document.querySelector('.modal-content button').onclick = closeModal;
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('languageModal');
+            modal.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
